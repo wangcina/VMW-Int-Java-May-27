@@ -1,5 +1,7 @@
 package onlyone;
 
+import java.lang.reflect.Constructor;
+
 public class Client {
 //	@Inject -- could be used to indicate external injection for this field
 	private Data data;
@@ -9,9 +11,20 @@ public class Client {
 	}
 	
 	public void go() throws Throwable {
-		String className = "onlyone.StaticGlobalData";
+		String className;
+		if (Math.random() > 0.5) {
+			className = "onlyone.StaticGlobalData";
+		} else {
+			className = "onlyone.GlobalDataForTesting";
+		}
 		Class<Data> clazz = (Class<Data>)Class.forName(className);
-		data = clazz.newInstance();
+		// find the zero argument constructor
+		Constructor<Data> constructor = clazz.getDeclaredConstructor();
+		
+		// disable the access control checks (the constructor might be private)
+		constructor.setAccessible(true);
+		// create the instance
+		data = constructor.newInstance();
 		runTest(data);
 
 //		runTest(StaticGlobalData.get());
