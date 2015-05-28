@@ -21,6 +21,7 @@ public class Account {
 	}
 	
 	public long withdraw(long amount) {
+		if (amount <= 0) throw new IllegalArgumentException("Don't try to deposit using withdraw");
 		if (withdrawalStrategy.permitWithdrawal(balance, amount)) {
 			log.info("A/C id " + accountId + " balance " + balance + " Withdrawing " + amount);
 			balance -= amount;
@@ -29,5 +30,9 @@ public class Account {
 			amount = 0;
 		}
 		return amount;
+	}
+	
+	public int getAccountId() {
+		return accountId;
 	}
 }
