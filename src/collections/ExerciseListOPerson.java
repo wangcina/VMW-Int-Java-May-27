@@ -40,9 +40,18 @@ public class ExerciseListOPerson {
 		System.out.println("> " + lp);
 
 		System.out.println("============================\n> " + lp);
-		Collections.sort(lp, Person.getAddressComaparator());
+//		Collections.sort(lp, Person.getAddressComaparator());
+		lp.sort((p1, p2)->p1.getAddress().compareTo(p2.getAddress()));
 		System.out.println("> " + lp);
-
+		
+		long count = lp.stream().count();
+		System.out.println("Count is " + count);
+		
+		lp.stream()
+			.parallel()
+			.filter((q)->q.getAge()> 35)
+			.map((q)->q.getName())
+			.forEach((q)->System.out.println(">> " + q));
 	}
 
 }
